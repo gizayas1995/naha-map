@@ -4,7 +4,6 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '© OpenStreetMap contributors'
 }).addTo(map);
 
-// Character selection
 let selectedCharacter = null;
 
 function selectCharacter(name) {
@@ -18,7 +17,7 @@ function selectCharacter(name) {
   });
 
   L.marker([26.2119, 127.7127], { icon: icon }).addTo(map)
-    .bindPopup("ここがハンタガー！");
+    .bindPopup("This is Hantagā!").openPopup();
 }
 
 window.onload = () => {
