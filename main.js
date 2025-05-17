@@ -22,4 +22,4 @@ function selectCharacter(name) {
 
 window.onload = () => {
   document.getElementById("character-modal").style.display = "flex";
-}
+};
