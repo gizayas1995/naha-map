@@ -3,15 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Naha Map Experience</title>
+  <title>NahaMap Chose Character</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
-  <h1>NahaMapBeta</h1>
+  <div id="character-modal">
+    <h2>Your body！</h2>
+    <button class="character-select" onclick="selectCharacter('turtle')">Turtle</button>
+    <button class="character-select" onclick="selectCharacter('bird')">Bird</button>
+    <button class="character-select" onclick="selectCharacter('robot')">Robo</button>
+    <button class="character-select" onclick="selectCharacter('ladybug')">LadyBug</button>
+  </div>
   <div id="map"></div>
   <script src="main.js"></script>
-  <audio id="bgm" src="audio.ogg" loop autoplay></audio>
 </body>
 </html>
