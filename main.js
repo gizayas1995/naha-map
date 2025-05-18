@@ -12,7 +12,7 @@ function selectCharacter(name) {
 
   const icon = L.icon({
     iconUrl: 'img/' + name + '.png',
-    iconSize: [48, 48],
+    iconSize: [64, 64],
     iconAnchor: [24, 24]
   });
 
