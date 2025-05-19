@@ -1,61 +1,68 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <title>PixelBeast Naha</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <meta charset="UTF-8">
+  <title>Naha Map Demo</title>
   <style>
-    html, body, #map {
-      height: 100%;
+    html, body {
       margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    #map {
+      height: 100%;
+      width: 100%;
     }
     .character {
-      width: 64px;
-      image-rendering: pixelated;
       position: absolute;
-      transform: translate(-50%, -100%);
-      pointer-events: none;
+      width: 64px;
+      height: 64px;
+      display: none;
     }
   </style>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
 <body>
   <div id="map"></div>
+  <img id="robot" class="character" src="img/robo_front_still.png" />
+  <img id="turtle" class="character" src="img/turtle_front_still.png" />
+  <img id="bird" class="character" src="img/bird_front_still.png" />
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
     const map = L.map('map').setView([26.2124, 127.6792], 17);
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '© OpenStreetMap contributors'
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    const characters = [
-      {
-        name: "robo",
-        image: "img/robo_front_still.png",
-        latlng: [26.2124, 127.6792]
-      },
-      {
-        name: "turtle",
-        image: "img/turtle_front_still.png",
-        latlng: [26.2130, 127.6795]
-      },
-      {
-        name: "bird",
-        image: "img/bird_front_still.png",
-        latlng: [26.2118, 127.6788]
-      }
-    ];
+    const characters = {
+      robot: document.getElementById('robot'),
+      turtle: document.getElementById('turtle'),
+      bird: document.getElementById('bird')
+    };
 
-    characters.forEach(char => {
-      L.marker(char.latlng, {
-        icon: L.divIcon({
-          className: '',
-          html: `<img class="character" src="${char.image}" />`,
-          iconSize: [64, 64],
-          iconAnchor: [32, 64]
-        })
-      }).addTo(map);
+    function showCharacter(id, lat, lng) {
+      const char = characters[id];
+      if (!char) return;
+
+      const point = map.latLngToContainerPoint([lat, lng]);
+      char.style.left = point.x + 'px';
+      char.style.top = point.y + 'px';
+      char.style.display = 'block';
+    }
+
+    // キャラ選択用マーカー
+    L.marker([26.2124, 127.6792]).addTo(map).bindPopup('ROBOT').on('click', () => {
+      showCharacter('robot', 26.2124, 127.6792);
+    });
+
+    L.marker([26.2127, 127.6795]).addTo(map).bindPopup('TURTLE').on('click', () => {
+      showCharacter('turtle', 26.2127, 127.6795);
+    });
+
+    L.marker([26.2121, 127.6791]).addTo(map).bindPopup('BIRD').on('click', () => {
+      showCharacter('bird', 26.2121, 127.6791);
     });
   </script>
 </body>
