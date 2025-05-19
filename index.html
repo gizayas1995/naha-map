@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -20,24 +21,42 @@
 </head>
 <body>
   <div id="map"></div>
-  <img class="character" id="robo" src="img/robo_front_still.png" />
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
-    const map = L.map('map').setView([26.2124, 127.6792], 17); // 那覇の中心に設定
+    const map = L.map('map').setView([26.2124, 127.6792], 17);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap contributors'
     }).addTo(map);
 
-    // キャラをマップ上の座標に配置
-    const roboMarker = L.marker([26.2124, 127.6792], {
-      icon: L.divIcon({
-        className: '',
-        html: '<img class="character" src="img/robo_front_still.png" />',
-        iconSize: [64, 64],
-        iconAnchor: [32, 64]
-      })
-    }).addTo(map);
+    const characters = [
+      {
+        name: "robo",
+        image: "img/robo_front_still.png",
+        latlng: [26.2124, 127.6792]
+      },
+      {
+        name: "turtle",
+        image: "img/turtle_front_still.png",
+        latlng: [26.2130, 127.6795]
+      },
+      {
+        name: "bird",
+        image: "img/bird_front_still.png",
+        latlng: [26.2118, 127.6788]
+      }
+    ];
+
+    characters.forEach(char => {
+      L.marker(char.latlng, {
+        icon: L.divIcon({
+          className: '',
+          html: `<img class="character" src="${char.image}" />`,
+          iconSize: [64, 64],
+          iconAnchor: [32, 64]
+        })
+      }).addTo(map);
+    });
   </script>
 </body>
 </html>
