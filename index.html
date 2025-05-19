@@ -3,21 +3,41 @@
 <head>
   <meta charset="UTF-8" />
   <title>PixelBeast Naha</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <style>
-    body {
-      background-color: #222;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+    html, body, #map {
+      height: 100%;
+      margin: 0;
     }
-    img {
-      width: 200px;
+    .character {
+      width: 64px;
       image-rendering: pixelated;
+      position: absolute;
+      transform: translate(-50%, -100%);
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
-  <img src="img/robo_front_still.png" alt="Robo Front" />
+  <div id="map"></div>
+  <img class="character" id="robo" src="img/robo_front_still.png" />
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    const map = L.map('map').setView([26.2124, 127.6792], 17); // 那覇の中心に設定
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // キャラをマップ上の座標に配置
+    const roboMarker = L.marker([26.2124, 127.6792], {
+      icon: L.divIcon({
+        className: '',
+        html: '<img class="character" src="img/robo_front_still.png" />',
+        iconSize: [64, 64],
+        iconAnchor: [32, 64]
+      })
+    }).addTo(map);
+  </script>
 </body>
 </html>
