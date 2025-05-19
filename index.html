@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Naha Map Game</title>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8">
+  <title>Naha RPG Map</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <style>
-    html, body { margin: 0; padding: 0; height: 100%; }
+    html, body { height: 100%; margin: 0; }
     #map { height: 100%; }
     .character-select {
       position: absolute;
@@ -13,14 +13,15 @@
       left: 50%;
       transform: translate(-50%, -50%);
       background: white;
-      padding: 1em;
+      padding: 10px 20px;
       border-radius: 10px;
-      box-shadow: 0 0 10px gray;
+      box-shadow: 0 0 10px #888;
+      z-index: 1000;
       text-align: center;
     }
     .character-select img {
-      width: 50px;
-      margin: 0 10px;
+      width: 60px;
+      margin: 10px;
       cursor: pointer;
     }
     .message {
@@ -28,31 +29,45 @@
       bottom: 10px;
       width: 100%;
       text-align: center;
-      font-family: sans-serif;
       font-size: 0.9em;
       color: white;
       background: rgba(0,0,0,0.6);
       padding: 6px 0;
+      z-index: 1000;
     }
   </style>
 </head>
 <body>
   <div id="map"></div>
-  <div class="character-select">
+
+  <div class="character-select" id="charSelect">
     <strong>Select Your Character</strong><br>
-    <img src="img/robo_front_still.png" alt="Robo" />
-    <img src="img/turtle_front_still.png" alt="Turtle" />
-    <img src="img/bird_front_still.png" alt="Bird" />
+    <img src="img/robo_front_still.png" alt="Robo" onclick="selectCharacter('robo')" />
+    <img src="img/turtle_front_still.png" alt="Turtle" onclick="selectCharacter('turtle')" />
+    <img src="img/bird_front_still.png" alt="Bird" onclick="selectCharacter('bird')" />
   </div>
-  <div class="message">Please choose your character to begin.<br>This location offers a knowledge challenge.</div>
+
+  <div class="message">
+    Please choose your character to begin.<br>This location offers a knowledge challenge.
+  </div>
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
-    const map = L.map('map').setView([26.213, 127.681], 17); // 座標とズーム
+    const map = L.map('map').setView([26.213, 127.681], 17); // 久茂地あたり
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: 'Map data © OpenStreetMap contributors'
+      attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
+
+    function selectCharacter(type) {
+      document.getElementById("charSelect").style.display = "none";
+      L.marker(map.getCenter(), {
+        icon: L.icon({
+          iconUrl: `img/${type}_front_still.png`,
+          iconSize: [64, 64]
+        })
+      }).addTo(map);
+    }
   </script>
 </body>
 </html>
