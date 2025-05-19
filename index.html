@@ -1,68 +1,60 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>Naha Map Demo</title>
+  <meta charset="UTF-8" />
+  <title>Naha Map</title>
   <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
+    body, html { margin: 0; padding: 0; height: 100%; }
+    #map { height: 100%; }
+    .character-select {
+      position: absolute; top: 10px; left: 10px; z-index: 1000;
     }
-    #map {
-      height: 100%;
-      width: 100%;
+    .character-select img {
+      width: 40px; cursor: pointer; margin: 4px;
+      border: 2px solid transparent;
     }
-    .character {
-      position: absolute;
-      width: 64px;
-      height: 64px;
-      display: none;
+    .character-select img.selected {
+      border-color: red;
     }
   </style>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </head>
 <body>
+  <div class="character-select">
+    <img src="img/robo_front_still.png" id="robo" class="selected" />
+    <img src="img/turtle_front_still.png" id="turtle" />
+    <img src="img/bird_front_still.png" id="bird" />
+  </div>
   <div id="map"></div>
-  <img id="robot" class="character" src="img/robo_front_still.png" />
-  <img id="turtle" class="character" src="img/turtle_front_still.png" />
-  <img id="bird" class="character" src="img/bird_front_still.png" />
-
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
-    const map = L.map('map').setView([26.2124, 127.6792], 17);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: 'Map data © <a href="https://openstreetmap.org">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    const characters = {
-      robot: document.getElementById('robot'),
-      turtle: document.getElementById('turtle'),
-      bird: document.getElementById('bird')
+    const characterImgs = {
+      robo: "img/robo_front_still.png",
+      turtle: "img/turtle_front_still.png",
+      bird: "img/bird_front_still.png"
     };
 
-    function showCharacter(id, lat, lng) {
-      const char = characters[id];
-      if (!char) return;
+    let selectedCharacter = 'robo';
 
-      const point = map.latLngToContainerPoint([lat, lng]);
-      char.style.left = point.x + 'px';
-      char.style.top = point.y + 'px';
-      char.style.display = 'block';
-    }
-
-    // キャラ選択用マーカー
-    L.marker([26.2124, 127.6792]).addTo(map).bindPopup('ROBOT').on('click', () => {
-      showCharacter('robot', 26.2124, 127.6792);
+    document.querySelectorAll('.character-select img').forEach(img => {
+      img.addEventListener('click', () => {
+        document.querySelectorAll('.character-select img').forEach(i => i.classList.remove('selected'));
+        img.classList.add('selected');
+        selectedCharacter = img.id;
+      });
     });
 
-    L.marker([26.2127, 127.6795]).addTo(map).bindPopup('TURTLE').on('click', () => {
-      showCharacter('turtle', 26.2127, 127.6795);
-    });
+    const map = L.map('map').setView([26.2124, 127.6792], 17);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-    L.marker([26.2121, 127.6791]).addTo(map).bindPopup('BIRD').on('click', () => {
-      showCharacter('bird', 26.2121, 127.6791);
+    const marker = L.marker([26.2124, 127.6792]).addTo(map);
+    marker.on('click', () => {
+      const icon = L.icon({
+        iconUrl: characterImgs[selectedCharacter],
+        iconSize: [96, 96],
+        iconAnchor: [48, 48]
+      });
+      L.marker(marker.getLatLng(), { icon }).addTo(map);
     });
   </script>
 </body>
