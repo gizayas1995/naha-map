@@ -1,61 +1,80 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Naha Map</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Naha Map Character Select</title>
   <style>
-    body, html { margin: 0; padding: 0; height: 100%; }
-    #map { height: 100%; }
-    .character-select {
-      position: absolute; top: 10px; left: 10px; z-index: 1000;
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #f5f5f5;
     }
-    .character-select img {
-      width: 40px; cursor: pointer; margin: 4px;
-      border: 2px solid transparent;
+    #map-container {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background: url('map.png') center center/cover no-repeat;
     }
-    .character-select img.selected {
-      border-color: red;
+    #character-selection {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      background: rgba(255,255,255,0.9);
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    #character-selection h2 {
+      margin: 0 0 8px 0;
+      font-size: 16px;
+    }
+    .character-button {
+      display: inline-block;
+      margin: 5px;
+      cursor: pointer;
+    }
+    .character-button img {
+      width: 48px;
+      height: 48px;
+    }
+    #info-box {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      background: rgba(0,0,0,0.75);
+      color: white;
+      padding: 12px;
+      border-radius: 5px;
+      font-size: 14px;
     }
   </style>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </head>
 <body>
-  <div class="character-select">
-    <img src="img/robo_front_still.png" id="robo" class="selected" />
-    <img src="img/turtle_front_still.png" id="turtle" />
-    <img src="img/bird_front_still.png" id="bird" />
+  <div id="map-container">
+    <div id="character-selection">
+      <h2>Select Your Character</h2>
+      <div class="character-button" onclick="selectCharacter('robo')">
+        <img src="img/robo_front.png" alt="Robo">
+      </div>
+      <div class="character-button" onclick="selectCharacter('turtle')">
+        <img src="img/turtle_front.png" alt="Turtle">
+      </div>
+      <div class="character-button" onclick="selectCharacter('bird')">
+        <img src="img/bird_front.png" alt="Bird">
+      </div>
+    </div>
+    <div id="info-box">
+      Please choose your character to begin.<br>
+      This location offers a knowledge challenge.
+    </div>
   </div>
-  <div id="map"></div>
+
   <script>
-    const characterImgs = {
-      robo: "img/robo_front_still.png",
-      turtle: "img/turtle_front_still.png",
-      bird: "img/bird_front_still.png"
-    };
-
-    let selectedCharacter = 'robo';
-
-    document.querySelectorAll('.character-select img').forEach(img => {
-      img.addEventListener('click', () => {
-        document.querySelectorAll('.character-select img').forEach(i => i.classList.remove('selected'));
-        img.classList.add('selected');
-        selectedCharacter = img.id;
-      });
-    });
-
-    const map = L.map('map').setView([26.2124, 127.6792], 17);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-
-    const marker = L.marker([26.2124, 127.6792]).addTo(map);
-    marker.on('click', () => {
-      const icon = L.icon({
-        iconUrl: characterImgs[selectedCharacter],
-        iconSize: [96, 96],
-        iconAnchor: [48, 48]
-      });
-      L.marker(marker.getLatLng(), { icon }).addTo(map);
-    });
+    function selectCharacter(name) {
+      alert(`You selected ${name}.`);
+      // Add further logic here (e.g. show character, start game, etc)
+    }
   </script>
 </body>
 </html>
