@@ -1,22 +1,23 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NahaMapBeta</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <title>PixelBeast Naha</title>
+  <style>
+    body {
+      background-color: #222;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    img {
+      width: 200px;
+      image-rendering: pixelated;
+    }
+  </style>
 </head>
 <body>
-  <div id="character-modal">
-    <h2>Pick your character!</h2>
-    <button class="character-select" onclick="selectCharacter('turtle')">Turtle</button>
-    <button class="character-select" onclick="selectCharacter('bird')">Bird</button>
-    <button class="character-select" onclick="selectCharacter('robot')">Robo</button>
-    <button class="character-select" onclick="selectCharacter('ladybug')">LadyBug</button>
-  </div>
-  <div id="map"></div>
-  <script src="main.js"></script>
+  <img src="img/robo_front_still.png" alt="Robo Front" />
 </body>
 </html>
