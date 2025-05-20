@@ -66,14 +66,23 @@
     }).addTo(map);
 
     function selectCharacter(type) {
-      document.getElementById("charSelect").style.display = "none";
-      L.marker(map.getCenter(), {
-        icon: L.icon({
-          iconUrl: `img/${type}_front_still.png`,
-          iconSize: [64, 64]
-        })
-      }).addTo(map);
-    }
+	document.getElementById("charSelect").style.display = "none";
+
+	const marker = L.marker(map.getCenter(), {
+    icon: L.icon({
+      iconUrl: `img/${type}_front_eyesclosing.png`, // 目を閉じた画像
+      iconSize: [64, 64]
+    })
+  }).addTo(map);
+
+  // 0.5秒後に目を開く画像に差し替え
+  setTimeout(() => {
+    marker.setIcon(L.icon({
+      iconUrl: `img/${type}_front_still.png`, // 通常画像に戻す
+      iconSize: [64, 64]
+		}));
+	}, 500);
+   }
   </script>
 </body>
 </html>
