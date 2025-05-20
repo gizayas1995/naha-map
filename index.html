@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -46,14 +47,14 @@
     <img src="img/turtle_front_still.png" alt="Turtle" onclick="selectCharacter('turtle')" />
     <img src="img/bird_front_still.png" alt="Bird" onclick="selectCharacter('bird')" />
   </div>
-    <img src="img/robo_front_still.png" alt="Test Robo" width="100">
+
   <div class="message">
     Please choose your character to begin.<br>This location offers a knowledge challenge.
   </div>
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
-    const map = L.map('map').setView([26.213, 127.681], 17); // 久茂地あたり
+    const map = L.map('map').setView([26.213, 127.681], 17);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
