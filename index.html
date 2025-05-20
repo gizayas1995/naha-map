@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,27 +7,17 @@
   <style>
     html, body { height: 100%; margin: 0; }
     #map { height: 100%; }
-    .character-select {
+    #quiz {
       position: absolute;
-      top: 40%;
+      top: 30%;
       left: 50%;
       transform: translate(-50%, -50%);
       background: white;
-      padding: 10px 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #888;
-      z-index: 1000;
-      text-align: center;
-    }
-    .character-select img {
-      width: 60px;
-      margin: 10px;
-      cursor: pointer;
-	  height: 64px;
-      width: auto;
-      margin: 10px;
-      display: inline-block;
-      vertical-align: middle;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #333;
+      z-index: 2000;
+      display: none;
     }
     .message {
       position: absolute;
@@ -45,16 +34,14 @@
 </head>
 <body>
   <div id="map"></div>
-
-  <div class="character-select" id="charSelect">
-    <strong>Select Your Character</strong><br>
-    <img src="img/robo_front_still.png" alt="Robo" onclick="selectCharacter('robo')" />
-    <img src="img/turtle_front_still.png" alt="Turtle" onclick="selectCharacter('turtle')" />
-    <img src="img/bird_front_still.png" alt="Bird" onclick="selectCharacter('bird')" />
-  </div>
-
   <div class="message">
     Please choose your character to begin.<br>This location offers a knowledge challenge.
+  </div>
+  <div id="quiz">
+    <h3>植物の構造についての問題です：</h3>
+    <p>根の役割は何ですか？</p>
+    <button onclick="answer(true)">水と養分を吸収する</button>
+    <button onclick="answer(false)">光を反射する</button>
   </div>
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -65,24 +52,60 @@
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    function selectCharacter(type) {
-	document.getElementById("charSelect").style.display = "none";
+    const hunterLatLng = [26.214, 127.682];
+    const type = 'robo'; // 固定 or ユーザー選択に変更可能
 
-	const marker = L.marker(map.getCenter(), {
-    icon: L.icon({
-      iconUrl: `img/${type}_front_eyesclosing.png`, // 目を閉じた画像
-      iconSize: [64, 64]
-    })
-  }).addTo(map);
+    const frames = [
+      `img/${type}_front_leftfoot_moving.png`,
+      `img/${type}_front_rightfoot_moving.png`
+    ];
 
-  // 0.5秒後に目を開く画像に差し替え
-  setTimeout(() => {
-    marker.setIcon(L.icon({
-      iconUrl: `img/${type}_front_still.png`, // 通常画像に戻す
-      iconSize: [64, 64]
-		}));
-	}, 500);
-   }
+    function createIcon(img) {
+      return L.icon({
+        iconUrl: img,
+        iconSize: [64, 64]
+      });
+    }
+
+    function animateToHunter(startLatLng) {
+      let marker = L.marker(startLatLng, { icon: createIcon(frames[0]) }).addTo(map);
+      let step = 0;
+      let currentIndex = 0;
+
+      const interval = setInterval(() => {
+        step += 0.01;
+        if (step >= 1) {
+          clearInterval(interval);
+          showQuizModal();
+          return;
+        }
+        const lat = startLatLng[0] + (hunterLatLng[0] - startLatLng[0]) * step;
+        const lng = startLatLng[1] + (hunterLatLng[1] - startLatLng[1]) * step;
+        currentIndex = (currentIndex + 1) % 2;
+        marker.setLatLng([lat, lng]);
+        marker.setIcon(createIcon(frames[currentIndex]));
+      }, 200);
+    }
+
+    navigator.geolocation.getCurrentPosition(pos => {
+      const startLatLng = [pos.coords.latitude, pos.coords.longitude];
+      map.setView(startLatLng, 17);
+      animateToHunter(startLatLng);
+    }, () => {
+      const fallback = [26.213, 127.681];
+      map.setView(fallback, 17);
+      animateToHunter(fallback);
+    });
+
+    function showQuizModal() {
+      document.getElementById('quiz').style.display = 'block';
+    }
+
+    function answer(correct) {
+      document.getElementById("quiz").innerHTML = correct ?
+        "<h3>正解！NFTの断片を獲得！</h3>" :
+        "<h3>残念！もう一度挑戦！</h3>";
+    }
   </script>
 </body>
 </html>
